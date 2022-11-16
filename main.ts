@@ -2,6 +2,18 @@ namespace SpriteKind {
     export const cursor = SpriteKind.create()
     export const newCursor = SpriteKind.create()
 }
+function countNeighborsTopBottomRight () {
+    neighborCount = 0
+    neighborCount += grid[11 - 0][15 - 1]
+    neighborCount += grid[11 - 1][15 - 1]
+    neighborCount += grid[11 - 1][15 + 0]
+    neighborCount = copyLeft(10)
+    neighborCount = copyLeft(0)
+    neighborCount = copyLeft(11)
+    neighborCount = copyTop()[11]
+    neighborCount = copyTop()[14]
+    return neighborCount
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     cursorGridRow += -1
     cursorY += -10
@@ -17,13 +29,27 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     drawGrid()
 })
 function countNeighbors2 (currentRow: number, currentCol: number) {
-	
+    neighborCount += grid[currentRow - 1][currentCol - 1]
+    neighborCount += grid[currentRow - 1][currentCol - 0]
+    neighborCount += grid[currentRow - 1][currentCol + 1]
 }
 function copyBottom () {
     return grid[11]
 }
 function copyRight (whichRow: number) {
     return grid[whichRow][15]
+}
+function countNeighborsTopBottomLeft () {
+    neighborCount = 0
+    neighborCount += grid[11 - 0][0 + 1]
+    neighborCount += grid[11 - 1][0 + 0]
+    neighborCount += grid[11 - 1][0 + 1]
+    neighborCount = copyRight(10)
+    neighborCount = copyRight(0)
+    neighborCount = copyRight(11)
+    neighborCount = copyTop()[0]
+    neighborCount = copyTop()[1]
+    return neighborCount
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     cursorGridCol += 1
@@ -135,9 +161,9 @@ function copyLeft (whichRow: number) {
 function countNeighborsWrapBottom (currentRow: number, currentCol: number) {
     neighborCount = 0
     if (currentCol == 0) {
-        return 0
+        return countNeighborsTopLeft()
     } else if (currentCol == 15) {
-        return 0
+        return countNeighborsTopRight()
     } else {
         neighborCount += copyTop()[currentCol - 1]
         neighborCount += copyTop()[currentCol - 0]
@@ -153,11 +179,11 @@ function countNeighborsWrapBottom (currentRow: number, currentCol: number) {
 function copyTop () {
     return grid[0]
 }
-let neighborCount = 0
 let gridSprite: Sprite = null
 let currentX = 0
 let currentY = 0
 let gridSprites: Sprite[] = []
+let neighborCount = 0
 let neighborCountSprite: TextSprite = null
 let cursorY = 0
 let cursorX = 0
